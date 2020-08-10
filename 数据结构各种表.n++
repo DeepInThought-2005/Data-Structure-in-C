@@ -1,0 +1,193 @@
+***********************************************************
+单链表：
+
+a1 -> a2 -> a3 -> a4 -> a5
+1     2     3     4     5
+
+插入操作：在三号位置插入a99
+
+		       *-> a99 -*
+		       |   4    |
+		       |        |
+a1 -> a2 -> a3-*        *->a4 -> a5
+1     2     3              5     6
+
+for循环查找直到node位置-1, 得到currNode（上一个结点）
+//将node->next指针域改为currNode->next的指针域(指向)，使node（a99）指向a4
+原node(a99)->next(现指向NULL) = currNode(a3)->next(现指向a4);
+//将currNode(a3)的指针域改为指向node(a99)结点
+currNode(a3)->next = node(a99);
+//链表总长度+1
+linkedList->length++;
+
+===================================================
+
+删除操作：删除三号元素
+           
+                    *--------*  
+                    | *----* |
+头指针 -> a1 -> a2 -* |a3->| *-> a4 -> a5
+          1     2     *----*     3     4
+
+//使用for循环找到要删除结点node及他的前缀结点
+for (int i = 1; node && i < pos; i++)
+{
+	preNode = node;
+	node = node->pNext;
+}
+//将结点a2的指针域改为指向要删除结点（a3）的下一个结点（a4）
+preNode->next = node->next;
+//最后将a3元素free掉
+free(node)
+//再将整个链表的长度-1
+linkedList->length--
+
+***********************************************************
+
+循环链表：
+ *-------------------------------*
+ |								 |
+ *-> a1 -> a2 -> a3 -> a4 -> a5 -*
+ |	 1     2     3     4     5
+ |
+ *-头指针
+ 
+ ===================================================
+
+插入操作：在1号位置插入a99
+
+ *----------------------------------------*
+ |                                        |
+ |        *-> a1 -> a2 -> a3 -> a4 -> a5 -*
+ |	      |   1     2     3     4     5
+ |        |
+ *-> a99 -* 
+ |          
+ *-头指针
+ 
+//使用for循环找到链表的最后一个结点lastNode
+for (int i = 1; i < cLinkedList; i++)
+{
+	lastNode = lastNode->next;
+}
+//将lastNode->next接待你改为要插入结点node(a99)
+lastNode->next = node;
+//将头指针指向要插入结点(node)
+circularLinkedList->next（头指针） = node;
+//链表总长度+1
+circularLinkedList->length++;
+ 
+===================================================
+
+删除操作：删除一号元素
+ *--------------------------------------*
+ |  *------*                            |
+ |  | a1 ->|  *-> a2 -> a3 -> a4 -> a5 -*
+ |	| 1    |  |   1     2     3     4
+ |  *------*  |
+ *------------* 
+              |
+ 头指针-------*
+
+//使用for循环找到链表的最后一个结点lastNode
+for (int i = 1;i < cLinkedList->length; i++)
+{
+	lastNode = lastNode->next;
+}
+//将头指针指向要删除结点的下一个结点（a2）
+cLinkedList->next（头指针） = node->next;
+//将lastNode也指向要删除结点的下一个结点
+lastNode->next = cLinkedList->next;
+//将要删除结点内存释放
+free(node)
+//链表总长度-1
+cLinkedList--;
+
+***********************************************************
+双向链表： 
+
+(@：指向)
+   NULL<-p1  p2  p3  p4  p5	      （p = prev）
+			/   /   /   /
+		   /   /   /   / 
+		  &   &   &   & 
+头指针-> a1  a2  a3  a4  a5		  （a = node）
+			&   &   &   &
+		   /   /   /   /
+		  /   /   /   /
+		 n1  n2  n3  n4  n5->NULL （n = next）
+
+===================================================
+
+插入操作：在3号位置插入a99
+
+(&：指向)
+              *-----------------------*
+              |  *--------------*     |   
+              |  |              |     |
+   NULL<-p1 p2|  p3  p4  p5	    |    p99 (p = prev)
+	        / | .   /   /       |
+		   /  |.   /   /        | 
+		  &   &   &   &         |          
+头指针-> a1  a2  a3  a4  a5		*--& a99 (a = node)    
+			&    &   &   &            &               
+		   /   . |  /   /             |
+		  /   .  | /   /              *---------------*      
+		 n1  n2  |n3  n4  n5->NULL   n99  (n = next)  | 
+             |   |                    |               |  
+             |   *--------------------*               |  
+			 *----------------------------------------*	 
+			 
+			 
+//使用for循环查找要插入结点位置的上一个结点currNode(a2)
+for (int i = 1; currNode && i < pos - 1; i++)
+{
+	currNode = currNode->next;
+}
+//要插入结点node的prev就指向currNode(a2)
+node(a99)->prev = currNode(a2);
+//n99(node(a99)的next)改变指针域指向n2(currNode(a2)->next)指向的结点a3
+node(a99)->next = currNode(a2)->next;
+//n2(currNode(a2)->next)原指向a3，现在改变为指向node(a99)
+currNode->next = node;
+//currNode(a2)->next指向a3，a3的prev（上一个结点）就也指向node(n99)
+currNode->next->prev = node;
+
+===================================================
+
+删除操作：删除三号元素
+
+(@：指向)
+   NULL<-p1  p2 [p3] p4  p5	       （p = prev）
+			/ *------*  /
+		   /  |        / 
+		  &   &       &
+头指针-> a1  a2 [a3] a4  a5		   （a = node）
+			&        &   &
+		   /         |  /
+		  /   *------* /
+		 n1  n2 [n3] n4  n5->NULL  （n = next）
+
+//使用for循环查找要插入结点位置
+for (int i = 1; i < pos; i++)
+{
+	node = node->next;
+}
+//p4(node(a3)->next->prev)原指向a3，现在改为指向p3(node->prev)指向的位置a2
+//p4->a2
+node->next->prev = node->prev
+//n2(node(a3)->prev->next)原指向a3, 现在改为指向n3(node->next)指向的位置a4
+//n2->a4
+node->prev->next = node->next
+//释放已删除的结点
+free(node);
+//链表总长度-1
+dLinkedList->length--;
+
+
+
+
+
+
+
+
