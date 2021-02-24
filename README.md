@@ -1,6 +1,6 @@
 #C语言数据结构
 
-@copyright by JDT-MYDCC
+@copyright by 819-Zhou
 
 关于C语言数据结构总结，持续更新
 
